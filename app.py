@@ -42,11 +42,26 @@ def users():
 
 
 @app.route('/class')
-def getclass():
-    class_ = []
-    for c in Class.query.all():
-        class_.append(c.info)
-    return jsonify(class_)
+def get_class():
+    class_all = Class.query.all()
+    class_list = []
+    for c in class_all:
+        class_dic = {}
+        class_dic['info'] = c.info
+        class_dic['title'] = c.title
+        class_list.append(class_dic)
+
+    dic = {}
+    if class_list is not None:
+        dic['code'] = 200
+        dic['message'] = 'success'
+        dic['classes'] = class_list
+        return jsonify(dic)
+    else:
+        dic['code'] = 400
+        dic['message'] = 'no classes'
+        dic['classes'] = []
+        return jsonify(dic)
 
 
 @app.route('/')
