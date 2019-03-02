@@ -2,14 +2,19 @@
 
 from . import app
 from .models import User
-from . import db
+
+import json
+
+
+@app.route('/users')
+def users():
+    users_ = []
+    for user in User.query.all():
+        users_.append(user.username)
+
+    return json.dumps(users_)
 
 
 @app.route('/')
 def index():
     return 'index page'
-
-
-if __name__ == '__main__':
-    db.create_all()
-    app.run(host='0.0.0.0')
