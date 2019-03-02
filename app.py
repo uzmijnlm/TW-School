@@ -1,21 +1,19 @@
 #!/usr/bin/env python3
 
 from . import app
+from .models import Class
 from .models import User
 from .login import Login_manager
-
-import json
 from flask import request
 from flask import jsonify
 
-@app.route('/login', methods=['GET'])
+@app.route('/login', methods=['POST', 'GET'])
 def login():
-    error = None
     if request.method == 'POST':
-        if Login_manager.valid_login(request.form['username'], request.form['password']):
+        user_id = Login_manager.valid_login(request.json['username'], request.json['password'])
+        if user_id is not None:
             return Login_manager.login_success()
         else:
-            error = 'Invalid username/password'
             return Login_manager.login_failure()
     return Login_manager.login_failure()
 
