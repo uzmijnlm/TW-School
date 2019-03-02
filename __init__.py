@@ -28,14 +28,16 @@ def init_app():
 
 
 def preload_users():
-    from .models import User
+    from .models import User, Class
     u0 = User(username='u0', password='u0')
     u1 = User(username='u1', password='u1')
     u2 = User(username='u2', password='u2')
     u3 = User(username='u3', password='u3')
     u4 = User(username='u4', password='u4')
     u5 = User(username='u5', password='u5')
-    db.session.add_all([u0, u1, u2, u3, u4, u5])
+    c1 = Class(info='material of c1')
+    c2 = Class(info='material of c2')
+    db.session.add_all([u0, u1, u2, u3, u4, u5, c1, c2])
     db.session.commit()
 
 
