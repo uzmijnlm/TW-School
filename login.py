@@ -2,6 +2,7 @@ from flask import jsonify
 from .models import User
 from . import db
 from flask import make_response
+
 class Login_manager:
     @classmethod
     def valid_login(cls, username, password):
@@ -13,11 +14,14 @@ class Login_manager:
                 return None
 
     @classmethod
-    def login_success(cls):
+    def login_success(cls, user_id):
         dic = {}
         dic['code'] = 200
         dic['message'] = 'login success'
-        return jsonify(dic)
+        import time
+        res = jsonify(dic)
+        res.set_cookie('cookie-user_id', str(user_id), expires=(time.time() + 300000))
+        return res
 
 
     @classmethod

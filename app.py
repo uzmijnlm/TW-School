@@ -11,7 +11,7 @@ def login():
     if request.method == 'POST':
         user_id = Login_manager.valid_login(request.json['username'], request.json['password'])
         if user_id is not None:
-            return Login_manager.login_success()
+            return Login_manager.login_success(user_id)
         else:
             return Login_manager.login_failure()
     return Login_manager.login_failure()
