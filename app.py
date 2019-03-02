@@ -5,6 +5,16 @@ from .models import User, Class
 from .login import Login_manager
 from flask import request
 from flask import jsonify
+from flask import make_response
+
+@app.before_request
+def check_cookie():
+    cookie = request.cookies.get('cookie-user_id')
+    if cookie is None and request.path != '/login':
+        dic = {}
+        dic['code'] = 400
+        dic['message'] = 'please re-login'
+        return jsonify(dic)
 
 @app.route('/login', methods=['POST'])
 def login():
@@ -16,6 +26,11 @@ def login():
             return Login_manager.login_failure()
     return Login_manager.login_failure()
 
+@app.route('/logout', methods=['GET'])
+def logout():
+    res = make_response('')
+    res.delete_cookie('cookie-user_id')
+    return res
 
 @app.route('/users')
 def users():
