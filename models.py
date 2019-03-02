@@ -8,3 +8,28 @@ class User(db.Model):
 
     def __repr__(self):
         return '<User %r>' % self.username
+
+
+class UserClassRelation(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    userId = db.Column(db.Integer, nullable=False)
+    classId = db.Column(db.Integer, nullable=False)
+    point = db.Column(db.Integer, nullable=True)
+
+
+class Class(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    info = db.Column(db.String, nullable=True)
+
+
+class Problem(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    content = db.Column(db.String, nullable=False)
+    classId = db.Column(db.Integer, nullable=False)
+
+
+class Item(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    content = db.Column(db.String, nullable=False)
+    problemId = db.Column(db.Integer, nullable=False)
+    correct = db.Column(db.Integer, nullable=False)
