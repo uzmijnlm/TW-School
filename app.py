@@ -47,8 +47,10 @@ def get_class():
     class_list = []
     for c in class_all:
         class_dic = {}
+        class_dic['id'] = c.id
         class_dic['info'] = c.info
         class_dic['title'] = c.title
+        class_dic['learn_url'] = c.learn_url
         class_list.append(class_dic)
 
     dic = {}

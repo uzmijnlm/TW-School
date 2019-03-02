@@ -35,8 +35,8 @@ def preload_users():
     u3 = User(username='u3', password='u3')
     u4 = User(username='u4', password='u4')
     u5 = User(username='u5', password='u5')
-    c1 = Class(title='title', info='material of c1')
-    c2 = Class(title='title', info='material of c2')
+    c1 = Class(title='title', info='material of c1', learn_url='http://www.google.com')
+    c2 = Class(title='title', info='material of c2', learn_url='http://www.google.com')
     db.session.add_all([u0, u1, u2, u3, u4, u5, c1, c2])
     db.session.commit()
 
