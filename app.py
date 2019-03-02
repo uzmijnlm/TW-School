@@ -4,6 +4,7 @@ from . import app
 from .models import User, Class
 
 import json
+from flask import jsonify
 
 
 @app.route('/users')
@@ -12,7 +13,7 @@ def users():
     for user in User.query.all():
         users_.append(user.username)
 
-    return json.dumps(users_)
+    return jsonify(users_)
 
 
 @app.route('/class')
@@ -20,7 +21,7 @@ def getclass():
     class_ = []
     for c in Class.query.all():
         class_.append(c.info)
-    return json.dumps(class_)
+    return jsonify(class_)
 
 
 @app.route('/')
