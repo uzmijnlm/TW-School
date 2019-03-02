@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 
 from . import app
-from .models import User
+from .models import User, Class
 from .login import Login_manager
 
 import json
 from flask import request
 from flask import jsonify
+
 
 @app.route('/login', methods=['GET'])
 def login():
@@ -18,6 +19,7 @@ def login():
             error = 'Invalid username/password'
             return Login_manager.login_failure()
     return Login_manager.login_failure()
+
 
 @app.route('/users')
 def users():
