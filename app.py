@@ -68,7 +68,25 @@ def exam():
         problem_dict['content'] = content
         problem_dict['items'] = item_list
         problem_list.append(problem_dict)
-    return jsonify(problem_list)
+    dic = {}
+    dic['code'] = 200
+    dic['message'] = ''
+    dic['questions'] = problem_list
+    return jsonify(dic)
+
+@app.route('/check')
+def check():
+    item_list = [2, 4]
+    scores = 0
+    for item_id in item_list:
+        correct = Item.query.filter_by(id=item_id).first().correct
+        if correct == 1:
+            scores = scores + 10
+    dic = {}
+    dic['code'] = 200
+    dic['message'] = ''
+    dic['scores'] = scores
+    return jsonify(dic)
 
 @app.route('/class')
 def get_class():
