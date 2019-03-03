@@ -1,17 +1,17 @@
 #!/usr/bin/env python3
 
-from . import app
-from .models import User, Class, Item, Problem
+from . import app, db
+from .models import User, Class, Item, Problem, UserClassRelation
 from .login import Login_manager
 from flask import request
 from flask import jsonify
 from flask import make_response
+from flask import abort
 
 @app.before_request
 def check_cookie():
     cookie = request.cookies.get('cookie-user_id')
     if cookie is None and request.path != '/login':
-        from flask import abort
         abort(401)
 
 @app.route('/login', methods=['POST'])
@@ -34,14 +34,27 @@ def logout():
 def users():
     users_ = []
     for user in User.query.all():
-        users_.append(user.username)
+        users_.append(user.id)
 
     return jsonify(users_)
 
-@app.route('/exam', methods=['GET'])
+@app.route('/userclassrelation')
+def userclassrelation():
+    userclassrelations_ = []
+    for userclassrelation in UserClassRelation.query.all():
+        userclassrelations_.append(userclassrelation.point)
+    return jsonify(userclassrelations_)
+
+@app.route('/exam')
 def exam():
     user_id = request.cookies.get('cookie-user_id')
     current_class = User.query.filter_by(id=user_id).first().currentclass
+    userclassrelation = UserClassRelation.query.filter_by(userId=user_id).filter_by(classId=current_class).first()
+    point = 0
+    if userclassrelation:
+        point = userclassrelation.point
+    else:
+        abort(401)
     problem_list = []
     problems = Problem.query.filter_by(classId=current_class).all()
     selection = {'1': 'A', '2': 'B', '3': 'C', '4': 'D'}
@@ -70,20 +83,30 @@ def exam():
     dic['code'] = 200
     dic['message'] = ''
     dic['questions'] = problem_list
+    dic['point'] = point
     return jsonify(dic)
 
 @app.route('/check', methods=['POST'])
 def check():
+    user_id = request.cookies.get('cookie-user_id')
+    current_class = User.query.filter_by(id=user_id).first().currentclass
     item_list = request.json['item_id_list']
     scores = 0
     for item_id in item_list:
-        correct = Item.query.filter_by(id=item_id).first().correct
-        if correct == 1:
-            scores = scores + 10
+        item = Item.query.filter_by(id=item_id).first()
+        if item:
+            correct = item.correct
+            if correct == 1:
+                scores = scores + 10
+        else:
+            abort(401)
     dic = {}
     dic['code'] = 200
     dic['message'] = ''
     dic['scores'] = scores
+    userclassrelation = UserClassRelation.query.filter_by(userId=user_id).filter_by(classId=current_class).first()
+    userclassrelation.point = scores
+    db.session.commit()
     return jsonify(dic)
 
 @app.route('/class')

@@ -15,7 +15,7 @@ class UserClassRelation(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     userId = db.Column(db.Integer, nullable=False)
     classId = db.Column(db.Integer, nullable=False)
-    point = db.Column(db.Integer, nullable=True)
+    point = db.Column(db.Integer, nullable=True, default=-1)
 
 
 class Class(db.Model):
