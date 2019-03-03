@@ -21,6 +21,7 @@ class UserClassRelation(db.Model):
 class Class(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String, nullable=False)
+    learn_url = db.Column(db.String, nullable=False)
     info = db.Column(db.String, nullable=True)
 
 
