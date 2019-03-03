@@ -40,7 +40,7 @@ def users():
 
 @app.route('/exam')
 def exam():
-    user_id = 1
+    user_id = request.cookies.get('cookie-user_id')
     current_class = User.query.filter_by(id=user_id).first().currentclass
     problem_list = []
     problems = Problem.query.filter_by(classId=current_class).all()
@@ -74,7 +74,7 @@ def exam():
 
 @app.route('/check')
 def check():
-    item_list = [2, 4]
+    item_list = request.json['item_id_list']
     scores = 0
     for item_id in item_list:
         correct = Item.query.filter_by(id=item_id).first().correct
