@@ -11,10 +11,8 @@ from flask import make_response
 def check_cookie():
     cookie = request.cookies.get('cookie-user_id')
     if cookie is None and request.path != '/login':
-        dic = {}
-        dic['code'] = 401
-        dic['message'] = 'please re-login'
-        return jsonify(dic)
+        from flask import abort
+        abort(401)
 
 @app.route('/login', methods=['POST'])
 def login():
