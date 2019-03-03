@@ -38,7 +38,7 @@ def users():
 
     return jsonify(users_)
 
-@app.route('/exam')
+@app.route('/exam', methods=['GET'])
 def exam():
     user_id = request.cookies.get('cookie-user_id')
     current_class = User.query.filter_by(id=user_id).first().currentclass
@@ -109,6 +109,27 @@ def get_class():
         dic['message'] = 'no classes'
         dic['classes'] = []
         return jsonify(dic)
+
+
+@app.route('/profile', methods=['GET'])
+def user_profile():
+    user_id = request.cookies.get('cookie-user_id')
+    if user_id is not None:
+        user = User.query.filter(User.id == user_id).first()
+        class_id = user.currentclass
+        class_info = Class.query.filter(Class.id == class_id).first()
+        dic = {}
+        if class_info is None:
+            dic['code'] = 400
+            dic['message'] = '当前用户没有报名课程'
+        else:
+            dic['info'] = class_info.info
+            dic['title'] = class_info.title
+            dic['learn_url'] = class_info.learn_url
+            return jsonify(dic)
+    else:
+        from flask import abort
+        abort(401)
 
 
 @app.route('/')
