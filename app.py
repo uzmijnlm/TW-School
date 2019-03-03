@@ -12,7 +12,7 @@ def check_cookie():
     cookie = request.cookies.get('cookie-user_id')
     if cookie is None and request.path != '/login':
         dic = {}
-        dic['code'] = 400
+        dic['code'] = 401
         dic['message'] = 'please re-login'
         return jsonify(dic)
 

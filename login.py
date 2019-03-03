@@ -1,7 +1,5 @@
 from flask import jsonify
 from .models import User
-from . import db
-from flask import make_response
 
 class Login_manager:
     @classmethod
@@ -33,11 +31,4 @@ class Login_manager:
 
     @classmethod
     def find_user(cls, username):
-        def is_this_user(user):
-            if user.username == username:
-                return True
-            else:
-                return False
-
-        return db.session.query(User).filter(User.username == username).first()
-
+        return User.query.filter(User.username == username).first()
