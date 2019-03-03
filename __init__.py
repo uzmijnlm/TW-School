@@ -5,6 +5,7 @@ import os
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
+
 app = Flask(__name__)
 
 DB_PATH = '/tmp/app.db'
@@ -28,7 +29,7 @@ def init_app():
 
 
 def preload_users():
-    from .models import User, Class, Problem, Item
+    from .models import User, Class, Problem, Item, UserClassRelation
     u0 = User(username='u0', password='u0', currentclass=1)
     u1 = User(username='u1', password='u1', currentclass=1)
     u2 = User(username='u2', password='u2', currentclass=2)
@@ -48,7 +49,8 @@ def preload_users():
     i3 = Item(content='xxxxx', problemId=2, correct=0)
     i4 = Item(content='yyyyy', problemId=2, correct=1)
     i5 = Item(content='zzzzz', problemId=2, correct=0)
-    db.session.add_all([u0, u1, u2, u3, u4, u5, c1, c2, c3, c4, c5, c6, p1, p2, i1, i2, i3, i4, i5])
+    uc0 = UserClassRelation(userId=1, classId=1)
+    db.session.add_all([u0, u1, u2, u3, u4, u5, c1, c2, c3, c4, c5, c6, p1, p2, i1, i2, i3, i4, i5, uc0])
     db.session.commit()
 
 
