@@ -122,7 +122,9 @@ def user_profile():
         if class_info is None:
             dic['code'] = 400
             dic['message'] = '当前用户没有报名课程'
+            return jsonify(dic)
         else:
+            dic['id'] = class_info.id
             dic['info'] = class_info.info
             dic['title'] = class_info.title
             dic['learn_url'] = class_info.learn_url
