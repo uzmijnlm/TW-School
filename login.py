@@ -4,18 +4,22 @@ from .models import User
 class Login_manager:
     @classmethod
     def valid_login(cls, username, password):
-        if username == '' and password == '':
-            return True
-        else:
-            return False
-
+        user = cls.find_user(username)
+        if user:
+            if username == user.username and password == user.password:
+                return user.id
+            else:
+                return None
 
     @classmethod
-    def login_success(cls):
+    def login_success(cls, user_id):
         dic = {}
         dic['code'] = 200
         dic['message'] = 'login success'
-        return jsonify(dic)
+        import time
+        res = jsonify(dic)
+        res.set_cookie('cookie-user_id', str(user_id), expires=(time.time() + 300000))
+        return res
 
 
     @classmethod
