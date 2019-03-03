@@ -28,8 +28,8 @@ def init_app():
 
 
 def preload_users():
-    from .models import User, Class
-    u0 = User(username='u0', password='u0')
+    from .models import User, Class, Problem, Item
+    u0 = User(username='u0', password='u0', currentclass=1)
     u1 = User(username='u1', password='u1')
     u2 = User(username='u2', password='u2')
     u3 = User(username='u3', password='u3')
@@ -37,7 +37,14 @@ def preload_users():
     u5 = User(username='u5', password='u5')
     c1 = Class(title='title', info='material of c1', learn_url='http://www.google.com')
     c2 = Class(title='title', info='material of c2', learn_url='http://www.google.com')
-    db.session.add_all([u0, u1, u2, u3, u4, u5, c1, c2])
+    p1 = Problem(content='which is right?', classId=1)
+    p2 = Problem(content='which is right?', classId=1)
+    i1 = Item(content='xxxxx', problemId=1, correct=0)
+    i2 = Item(content='yyyyy', problemId=1, correct=1)
+    i3 = Item(content='xxxxx', problemId=2, correct=0)
+    i4 = Item(content='yyyyy', problemId=2, correct=1)
+    i5 = Item(content='zzzzz', problemId=2, correct=0)
+    db.session.add_all([u0, u1, u2, u3, u4, u5, c1, c2, p1, p2, i1, i2, i3, i4, i5])
     db.session.commit()
 
 
