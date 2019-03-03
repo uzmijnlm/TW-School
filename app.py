@@ -72,7 +72,7 @@ def exam():
     dic['questions'] = problem_list
     return jsonify(dic)
 
-@app.route('/check')
+@app.route('/check', methods=['POST'])
 def check():
     item_list = request.json['item_id_list']
     scores = 0
